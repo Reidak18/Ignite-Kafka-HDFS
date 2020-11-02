@@ -1,17 +1,16 @@
 package com.reidak18.ignite;
+import org.apache.ignite.*;
 
-/**
- * Hello world!
- */
-public final class App {
-    private App() {
+public final class App 
+{
+    private App() 
+    {
+        
     }
 
-    /**
-     * Says hello to the world.
-     * @param args The arguments of the program.
-     */
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
+        Ignition.start();
         System.out.println("Hello World!");
     }
 }
