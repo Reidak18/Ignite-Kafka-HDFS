@@ -1,7 +1,8 @@
 package com.reidak18.ignite;
-import org.apache.ignite.*;
 
-public final class App 
+import org.apache.ignite.Ignition;
+
+public final class App
 {
     private App() 
     {

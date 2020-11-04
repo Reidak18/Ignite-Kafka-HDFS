@@ -8,5 +8,3 @@
 /ZeppelinRemoteNotebooks/
 # Editor-based HTTP Client requests
 /httpRequests/
-*.jar
-*.iml
