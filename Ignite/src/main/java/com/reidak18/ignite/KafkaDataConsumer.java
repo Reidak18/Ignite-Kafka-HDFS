@@ -1,5 +1,9 @@
 package com.reidak18.ignite;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Properties;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -11,7 +15,8 @@ public class KafkaDataConsumer
     static final String TOPIC = "logs";
     static final String GROUP = "logs_group";
 
-    public void ReceiveMessage() throws InterruptedException {
+    public void ReceiveMessage() throws InterruptedException
+    {
         Properties props = new Properties();
         props.setProperty("bootstrap.servers", "localhost:9092");
         props.setProperty("group.id", GROUP);
@@ -43,4 +48,18 @@ public class KafkaDataConsumer
             System.out.println("Exception: " + ex.getMessage());
         }
     }
+
+    public static String ReadFromFile(String path) throws IOException
+    {
+        String contents = "";
+        File dir = new File(path);
+
+        for (File file : dir.listFiles()) {
+            contents += new String(Files.readAllBytes(Paths.get(String.valueOf(Paths.get(path, file.getName())))));
+        }
+
+        return contents;
+    }
 }
+
+

@@ -13,8 +13,11 @@ public class KafkaDataProducer
 {
     Properties props = new Properties();
     KafkaProducer<String, byte[]> producer;
+    String Data = "";
 
-    public KafkaDataProducer() throws ExecutionException, InterruptedException {
+    public KafkaDataProducer(String data) throws ExecutionException, InterruptedException
+    {
+        Data = data;
     }
 
     public void Init() throws InterruptedException
@@ -24,11 +27,9 @@ public class KafkaDataProducer
 
         producer = new KafkaProducer<String, byte[]>(this.props, new StringSerializer(), new ByteArraySerializer());
 
-        byte[] message = ("New Message1!").getBytes();
+        byte[] message = ("semd").getBytes();
         ProducerRecord<String, byte[]> record = new ProducerRecord<String, byte[]>(props.getProperty("kafka.topic.name"), message);
         producer.send(record);
-        System.out.println("Сообщение отправляется");
-        Thread.sleep(1000);
         System.out.println("Сообщение отправлено");
     }
 
