@@ -21,19 +21,16 @@ import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
+// Класс для чтения и записи в HDFS
 public class HDFSWriter
 {
-//    public void WriteToFile(String path) throws IOException
-//    {
-//        Configuration configuration = new Configuration();
-//        configuration.set("fs.defaultFS", "hdfs://localhost:9000");
-//    }
+        // Сохранение исходных данных
         public void SaveInputToHDFS(String inputs) throws IOException, URISyntaxException
         {
             CreateOutputDirectory("input");
             writeFileToHDFS(inputs, "/user/root/input/input.txt");
         }
-
+        // Сохранение результатов
         public void SaveResultsToHDFS(String results) throws IOException, URISyntaxException
         {
             CreateOutputDirectory("output");
@@ -54,7 +51,6 @@ public class HDFSWriter
             Configuration configuration = new Configuration();
             configuration.set("dfs.client.use.datanode.hostname", "true");
             configuration.set("fs.defaultFS", "hdfs://localhost:9000");
-//            FileSystem fileSystem = FileSystem.get(configuration);
             FileSystem fileSystem = FileSystem.get(new URI("hdfs://localhost:9000"), configuration);
             Path hdfsWritePath = new Path(path);
 
@@ -70,24 +66,15 @@ public class HDFSWriter
             fileSystem.close();
         }
 
-    public String ReadFileFromHDFS(String path) throws IOException {
-        Configuration configuration = new Configuration();
-        configuration.set("fs.defaultFS", "hdfs://localhost:9000");
-        FileSystem fileSystem = FileSystem.get(configuration);
-        //Create a path
-        Path hdfsReadPath = new Path(path);
-        //Init input stream
-        FSDataInputStream inputStream = fileSystem.open(hdfsReadPath);
-        //Classical input stream usage
-        String out = IOUtils.toString(inputStream, "UTF-8");
-        /*BufferedReader bufferedReader = new BufferedReader(
-                new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-        String line = null;
-        while ((line=bufferedReader.readLine())!=null){
-            System.out.println(line);
-        }*/
-        inputStream.close();
-        fileSystem.close();
-        return out;
-    }
+        public String ReadFileFromHDFS(String path) throws IOException {
+            Configuration configuration = new Configuration();
+            configuration.set("fs.defaultFS", "hdfs://localhost:9000");
+            FileSystem fileSystem = FileSystem.get(configuration);
+            Path hdfsReadPath = new Path(path);
+            FSDataInputStream inputStream = fileSystem.open(hdfsReadPath);
+            String out = IOUtils.toString(inputStream, "UTF-8");
+            inputStream.close();
+            fileSystem.close();
+            return out;
+        }
 }

@@ -12,8 +12,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+// Класс обработки данных
 public class IgniteMapperReducer extends ComputeTaskAdapter<String, ArrayList>
 {
+    // В map создаем отдельный экземпляр каждой строки в syslog, заполняем Hour и счетчики для нее
     @NotNull @Override public Map<? extends ComputeJob, ClusterNode> map(List<ClusterNode> nodes, String arg)
     {
         Map<ComputeJob, ClusterNode> map = new HashMap<>();
@@ -54,6 +56,7 @@ public class IgniteMapperReducer extends ComputeTaskAdapter<String, ArrayList>
         return map;
     }
 
+    // В reduce суммируем строки для одного часа и получаем суммарные значения счетчиков
     @Nullable @Override
     public ArrayList reduce(List<ComputeJobResult> results)
     {

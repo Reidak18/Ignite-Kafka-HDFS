@@ -18,15 +18,18 @@ public final class App
 
     public static void main(String[] args) throws ExecutionException, InterruptedException, IOException, URISyntaxException {
 
+        // Ждем данные от Kafka Provider
         System.out.println("Waiting data from Kafka...");
         KafkaDataConsumer consumer = new KafkaDataConsumer();
         consumer.ReceiveMessage();
 
+        // Читаем исходные данные в HDFS
         HDFSWriter reader = new HDFSWriter();
         String input = reader.ReadFileFromHDFS("/user/root/input/input.txt");
         System.out.println("Message received: ");
         System.out.println(input);
 
+        // Запускаем обработку в Ignite
         try (Ignite ignite = Ignition.start())
         {
             System.out.println();
@@ -41,6 +44,7 @@ public final class App
                 results += hourLog.Print() + "\n";
             }
 
+            // Сохраняем результаты в HDFS
             HDFSWriter writer = new HDFSWriter();
             writer.SaveResultsToHDFS(results);
         }

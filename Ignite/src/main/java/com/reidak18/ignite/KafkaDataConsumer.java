@@ -10,6 +10,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
+// Класс для приема сообщений от KafkaProvider
 public class KafkaDataConsumer
 {
     static final String TOPIC = "logs";
@@ -29,17 +30,20 @@ public class KafkaDataConsumer
             KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(props);
             consumer.subscribe(Arrays.asList(TOPIC));
 
-            // считываем вхолостую все, что было в очереди до отправки
+            // Костыль: считываем вхолостую все, что было в очереди до отправки
             ConsumerRecords<String, String> records = consumer.poll(1000L);
 
+            // Ждем сообщения
             while(true)
             {
                 records = consumer.poll(1000L);
                 for (ConsumerRecord<String, String> record : records)
                 {
+                    // Сохраняем полученные данные в HDFS
                     HDFSWriter writer = new HDFSWriter();
                     writer.SaveInputToHDFS(record.value());
                 }
+                // Как только пришло - останавливаемся
                 if (records.count() != 0)
                     break;
             }
