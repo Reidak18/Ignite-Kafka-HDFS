@@ -37,7 +37,8 @@ public class KafkaDataConsumer
                 records = consumer.poll(1000L);
                 for (ConsumerRecord<String, String> record : records)
                 {
-                    System.out.println("Received a message: " + record.value());
+                    HDFSWriter writer = new HDFSWriter();
+                    writer.SaveInputToHDFS(record.value());
                 }
                 if (records.count() != 0)
                     break;
@@ -47,18 +48,6 @@ public class KafkaDataConsumer
         {
             System.out.println("Exception: " + ex.getMessage());
         }
-    }
-
-    public static String ReadFromFile(String path) throws IOException
-    {
-        String contents = "";
-        File dir = new File(path);
-
-        for (File file : dir.listFiles()) {
-            contents += new String(Files.readAllBytes(Paths.get(String.valueOf(Paths.get(path, file.getName())))));
-        }
-
-        return contents;
     }
 }
 

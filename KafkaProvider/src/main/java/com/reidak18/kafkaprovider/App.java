@@ -14,7 +14,7 @@ public final class App
     }
 
     public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
-        //C:\Users\Nikita\Downloads\messages
+        // /root/Desktop/Ignite-Kafka-HDFS-master/input
         KafkaDataProducer producer = new KafkaDataProducer(ReadFromFile(args[0]));
         producer.Init();
     }

@@ -27,7 +27,7 @@ public class KafkaDataProducer
 
         producer = new KafkaProducer<String, byte[]>(this.props, new StringSerializer(), new ByteArraySerializer());
 
-        byte[] message = ("semd").getBytes();
+        byte[] message = (Data).getBytes();
         ProducerRecord<String, byte[]> record = new ProducerRecord<String, byte[]>(props.getProperty("kafka.topic.name"), message);
         producer.send(record);
         System.out.println("Сообщение отправлено");

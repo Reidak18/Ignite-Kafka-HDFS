@@ -7,6 +7,7 @@ import org.apache.ignite.compute.ComputeTaskAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import java.net.URISyntaxException;
 
 public final class App
 {
@@ -15,26 +16,33 @@ public final class App
         
     }
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
+    public static void main(String[] args) throws ExecutionException, InterruptedException, IOException, URISyntaxException {
 
         System.out.println("Waiting data from Kafka...");
         KafkaDataConsumer consumer = new KafkaDataConsumer();
-//        consumer.ReceiveMessage();
-        String str = consumer.ReadFromFile("C:\\Users\\Nikita\\Downloads\\messages");
+        consumer.ReceiveMessage();
+
+        HDFSWriter reader = new HDFSWriter();
+        String input = reader.ReadFileFromHDFS("/user/root/input/input.txt");
+        System.out.println("Message received: ");
+        System.out.println(input);
 
         try (Ignite ignite = Ignition.start())
         {
             System.out.println();
             System.out.println("Compute task map example started.");
 
-            ArrayList logs = ignite.compute().execute(IgniteMapperReducer.class, str);
+            ArrayList logs = ignite.compute().execute(IgniteMapperReducer.class, input);
 
-            System.out.println();
+            String results = "";
             for (Object log: logs)
             {
                 HourLog hourLog = (HourLog) log;
-                System.out.println(hourLog.Print());
+                results += hourLog.Print() + "\n";
             }
+
+            HDFSWriter writer = new HDFSWriter();
+            writer.SaveResultsToHDFS(results);
         }
     }
 }
