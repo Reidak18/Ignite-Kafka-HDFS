@@ -37,7 +37,7 @@ public class HDFSWriter
             writeFileToHDFS(results, "/user/root/output/output.txt");
         }
 
-        private void CreateOutputDirectory(String directoryName) throws IOException
+        public void CreateOutputDirectory(String directoryName) throws IOException
         {
             Configuration configuration = new Configuration();
             configuration.set("fs.defaultFS", "hdfs://localhost:9000");
@@ -46,7 +46,7 @@ public class HDFSWriter
             fileSystem.mkdirs(path);
         }
 
-        private void writeFileToHDFS(String str, String path) throws IOException, URISyntaxException
+        public void writeFileToHDFS(String str, String path) throws IOException, URISyntaxException
         {
             Configuration configuration = new Configuration();
             configuration.set("dfs.client.use.datanode.hostname", "true");
@@ -66,7 +66,8 @@ public class HDFSWriter
             fileSystem.close();
         }
 
-        public String ReadFileFromHDFS(String path) throws IOException {
+        public String ReadFileFromHDFS(String path) throws IOException
+        {
             Configuration configuration = new Configuration();
             configuration.set("fs.defaultFS", "hdfs://localhost:9000");
             FileSystem fileSystem = FileSystem.get(configuration);

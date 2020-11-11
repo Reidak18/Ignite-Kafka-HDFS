@@ -37,18 +37,8 @@ public class IgniteMapperReducer extends ComputeTaskAdapter<String, ArrayList>
                 {
                     System.out.println();
                     System.out.println(">>> Parsing '" + log + "' on this node from ignite job.");
-                    HourLog hourLog = new HourLog(log);
 
-                    if (log.contains("emerg") || log.contains("panic")) hourLog.Count0++;
-                    else if (log.contains("alert")) hourLog.Count1++;
-                    else if (log.contains("crit")) hourLog.Count2++;
-                    else if (log.contains("err")) hourLog.Count3++;
-                    else if (log.contains("warn")) hourLog.Count4++;
-                    else if (log.contains("notice")) hourLog.Count5++;
-                    else if (log.contains("info")) hourLog.Count6++;
-                    else if (log.contains("debug")) hourLog.Count7++;
-
-                    return hourLog;
+                    return Parce(log);
                 }
             }, node);
         }
@@ -86,6 +76,22 @@ public class IgniteMapperReducer extends ComputeTaskAdapter<String, ArrayList>
         }
 
         return (ArrayList) logs;
+    }
+
+    public HourLog Parce(String log)
+    {
+        HourLog hourLog = new HourLog(log);
+
+        if (log.contains("emerg") || log.contains("panic")) hourLog.Count0++;
+        else if (log.contains("alert")) hourLog.Count1++;
+        else if (log.contains("crit")) hourLog.Count2++;
+        else if (log.contains("err")) hourLog.Count3++;
+        else if (log.contains("warn")) hourLog.Count4++;
+        else if (log.contains("notice")) hourLog.Count5++;
+        else if (log.contains("info")) hourLog.Count6++;
+        else if (log.contains("debug")) hourLog.Count7++;
+
+        return hourLog;
     }
 
 }
